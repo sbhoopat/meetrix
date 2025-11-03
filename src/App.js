@@ -8,6 +8,11 @@ import CreateBusiness from "./components/CreateBusiness";
 import ViewBusinesses from "./components/ViewBusinesses";
 import Staff from "./components/Staff";
 import AIChatWindow from "./components/chat/AIChatWindow";
+import StudentDashboard from "./studentportal/StudentDashboard";
+import StudentAssignments from "./studentportal/StudentAssignments";
+import StudentGPA from "./studentportal/StudentGPA";
+import NotificationCenter from "./studentportal/NotificationCenter";
+import AttendanceScreen from "./studentportal/AttendanceScreen";
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -30,6 +35,11 @@ function LayoutWrapper() {
             <Route path="/admin/staff" element={<Staff />} />
             <Route path="/developer/create-business" element={<CreateBusiness />} />
             <Route path="/developer/view-businesses" element={<ViewBusinesses />} />
+            <Route path="/student/dashboard" element={<StudentDashboard />} />
+            <Route path="student/upcoming-assignments" element={<StudentAssignments />} />
+            <Route path="student/gpa" element={<StudentGPA />} />
+            <Route path="student/notifications" element={<NotificationCenter />} />
+            <Route path="student/attendance" element={<AttendanceScreen />} />
 
           </Routes>
         </main>
