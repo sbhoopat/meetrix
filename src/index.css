@@ -74,6 +74,7 @@ body {
 }
 .w-fit-content{
   width: fit-content;
+  min-width: 250px;
 }
 
 /* Style for present days */
