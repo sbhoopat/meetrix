@@ -1,12 +1,16 @@
 
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import "./i18n"; 
+import './index.css'; 
 
 import { StyledEngineProvider } from "@mui/material/styles";
 import App from "./App";
+import { AlertProvider } from './components/alerts/AlertContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StyledEngineProvider injectFirst>
-    <App />
+    <AlertProvider>
+      <App />
+    </AlertProvider>
   </StyledEngineProvider>
 );

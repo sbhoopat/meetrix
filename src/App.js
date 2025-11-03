@@ -4,29 +4,36 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Signup from "./components/Signup";
 import Home from "./pages/Home";
-import Admin from "./pages/Admin";
+import CreateBusiness from "./components/CreateBusiness";
+import ViewBusinesses from "./components/ViewBusinesses";
+import Staff from "./components/Staff";
+import AIChatWindow from "./components/chat/AIChatWindow";
 
-// Layout wrapper that conditionally hides header & sidebar
 function LayoutWrapper() {
   const location = useLocation();
   const hideLayout = location.pathname === "/login";
 
   return (
     <div className="flex flex-col h-screen">
+        
       {!hideLayout && <Navbar />}
-      <div className="flex flex-1">
-        {!hideLayout && <Sidebar />}
+      <div className="flex flex-1">  
+        {!hideLayout && <Sidebar role="developer"/>}
         <main
           className={`flex-1 ${
             hideLayout ? "bg-white" : "bg-[#E6EBF0] p-6 overflow-auto"
-          }`}
+          }`}  
         >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Signup />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/staff" element={<Staff />} />
+            <Route path="/developer/create-business" element={<CreateBusiness />} />
+            <Route path="/developer/view-businesses" element={<ViewBusinesses />} />
+
           </Routes>
         </main>
+         <AIChatWindow />
       </div>
     </div>
   );

@@ -1,179 +1,350 @@
 import React, { useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
 import {
-  DataGrid,
-  GridToolbarContainer,
-  GridToolbarExport,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarDensitySelector,
-} from "@mui/x-data-grid";
-import {
+  TextField,
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
-  TextField,
-  IconButton,
+  Typography,
+  MenuItem,
+  Grid,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 
-// Custom MUI styles
-const StyledButton = styled(Button)({
-  backgroundColor: "#002133",
+// --- Styled Buttons ---
+const OrangeredButton = styled(Button)({
+  backgroundColor: "#FF4500",
   color: "#fff",
-  "&:hover": {
-    backgroundColor: "#00394d",
-  },
-});
-
-const StyledToolbarButton = styled(Button)({
-  color: "#002133 !important",
-  borderColor: "#002133 !important",
-  textTransform: "none",
   fontWeight: 600,
-  backgroundColor: "transparent !important",
+  textTransform: "none",
+  boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
   "&:hover": {
-    backgroundColor: "#002133 !important",
-    color: "#fff !important",
-    borderColor: "#002133 !important",
+    backgroundColor: "#e03e00",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
   },
 });
 
+const CancelButton = styled(Button)({
+  color: "#002133",
+  textTransform: "none",
+  borderColor: "#ccc",
+});
 
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer className="flex justify-end gap-2 p-2">
-      <StyledToolbarButton variant="outlined">
-        <GridToolbarColumnsButton />
-      </StyledToolbarButton>
-      <StyledToolbarButton variant="outlined">
-        <GridToolbarFilterButton />
-      </StyledToolbarButton>
-      <StyledToolbarButton variant="outlined">
-        <GridToolbarDensitySelector />
-      </StyledToolbarButton>
-      <StyledToolbarButton variant="outlined">
-        <GridToolbarExport />
-      </StyledToolbarButton>
-    </GridToolbarContainer>
-  );
-}
-
-export default function DataTable() {
-  const [open, setOpen] = useState(false);
+export default function AdmissionEnquiryTable() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState([
-    { id: 1, name: "John Doe", mobile: "1234567890" },
-    { id: 2, name: "Jane Smith", mobile: "9876543210" },
-    { id: 3, name: "Alex Johnson", mobile: "9876501234" },
+    {
+      id: 1,
+      studentName: "John Doe",
+      gender: "Male",
+      dob: "2014-06-15",
+      age: "10 Years 3 Months",
+      currentSchool: "ABC Public School",
+      currentClass: "IV",
+      soughtClass: "V",
+      motherName: "Jane Doe",
+      fatherName: "Robert Doe",
+      mobile: "9876543210",
+      email: "john@example.com",
+      address: "123 Park Avenue, City",
+    },
   ]);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "mobile", headerName: "Mobile Number", flex: 1 },
+    { field: "studentName", headerName: "Student Name", flex: 1 },
+    { field: "gender", headerName: "Gender", width: 100 },
+    { field: "dob", headerName: "Date of Birth", width: 140 },
+    { field: "currentClass", headerName: "Current Class", width: 130 },
+    { field: "soughtClass", headerName: "Admission Class", width: 150 },
+    { field: "mobile", headerName: "Mobile No", width: 130 },
+    { field: "email", headerName: "Email", flex: 1 },
   ];
+
+  const filteredRows = rows.filter((r) =>
+    r.studentName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleAddNew = () => {
+    setSelectedRow({
+      id: null,
+      studentName: "",
+      gender: "",
+      dob: "",
+      age: "",
+      currentSchool: "",
+      currentClass: "",
+      soughtClass: "",
+      motherName: "",
+      fatherName: "",
+      mobile: "",
+      email: "",
+      address: "",
+    });
+    setOpenDialog(true);
+  };
 
   const handleRowClick = (params) => {
     setSelectedRow(params.row);
-    setOpen(true);
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+    setSelectedRow(null);
   };
 
   const handleSave = () => {
-    setRows((prev) =>
-      prev.map((r) => (r.id === selectedRow.id ? selectedRow : r))
-    );
-    setOpen(false);
+    if (selectedRow.id) {
+      // Edit existing
+      setRows((prev) =>
+        prev.map((r) => (r.id === selectedRow.id ? selectedRow : r))
+      );
+    } else {
+      // Add new
+      setRows((prev) => [...prev, { ...selectedRow, id: prev.length + 1 }]);
+    }
+    setOpenDialog(false);
   };
 
   return (
-    <div
-      style={{
-        height: 480,
-        width: "100%",
-        backgroundColor: "white",
-        borderRadius: 12,
-        padding: "1rem",
-      }}
-    >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        onRowClick={handleRowClick}
-        checkboxSelection
-        disableRowSelectionOnClick
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-        sx={{
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#E6EBF0",
-            color: "#002133",
-            fontWeight: "bold",
-          },
-          "& .MuiDataGrid-cell": {
-            color: "#002133",
-          },
-          "& .MuiCheckbox-root.Mui-checked": {
-            color: "#002133 !important",
-          },
-        }}
-      />
+    <div className="p-6 bg-white min-h-screen">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <Typography variant="h5" className="text-[#002133] font-bold">
+          Admission Enquiry
+        </Typography>
+        <OrangeredButton
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleAddNew}
+        >
+          Add New Enquiry
+        </OrangeredButton>
+      </div>
 
-      {/* Dialog (Popup) */}
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          style: { borderRadius: 16, padding: "10px 20px" },
+      {/* Search Bar */}
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-6">
+        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-md shadow-sm border border-gray-100 w-full md:w-1/3">
+          <SearchIcon sx={{ color: "#002133" }} />
+          <input
+            type="text"
+            placeholder="Search by student name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="outline-none bg-transparent text-[#002133] text-sm w-full"
+          />
+        </div>
+      </div>
+
+      {/* DataGrid */}
+      <div
+        style={{
+          height: 500,
+          width: "100%",
+          backgroundColor: "white",
+          borderRadius: 12,
+          padding: "1rem",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
         }}
       >
-        <DialogTitle
+        <DataGrid
+          rows={filteredRows}
+          columns={columns}
+          pageSize={5}
+          disableRowSelectionOnClick
+          onRowClick={handleRowClick}
           sx={{
-            fontWeight: "bold",
-            color: "#002133",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#F5F7FA",
+              color: "#002133",
+              fontWeight: "bold",
+            },
+            "& .MuiDataGrid-cell": {
+              color: "#002133",
+            },
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: "rgba(255,69,0,0.06)",
+              cursor: "pointer",
+            },
           }}
-        >
-          Edit Row
-          <IconButton onClick={() => setOpen(false)}>
-            <CloseIcon />
-          </IconButton>
+        />
+      </div>
+
+      {/* Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="md"
+        PaperProps={{
+          sx: { borderRadius: 3, p: 2 },
+        }}
+      >
+        <DialogTitle>
+          <Typography variant="h6" fontWeight="bold" color="#002133">
+            {selectedRow?.id ? "Edit Enquiry" : "New Enquiry"}
+          </Typography>
         </DialogTitle>
 
-        <DialogContent className="flex flex-col gap-4 mt-2">
-          <TextField
-            label="Name"
-            value={selectedRow?.name || ""}
-            onChange={(e) =>
-              setSelectedRow({ ...selectedRow, name: e.target.value })
-            }
-            fullWidth
-          />
-          <TextField
-            label="Mobile"
-            value={selectedRow?.mobile || ""}
-            onChange={(e) =>
-              setSelectedRow({ ...selectedRow, mobile: e.target.value })
-            }
-            fullWidth
-          />
+        <DialogContent dividers>
+          {selectedRow && (
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Student Name"
+                  fullWidth
+                  value={selectedRow.studentName}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, studentName: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Gender"
+                  select
+                  fullWidth
+                  value={selectedRow.gender}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, gender: e.target.value })
+                  }
+                >
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
+                </TextField>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Date of Birth"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  value={selectedRow.dob}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, dob: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Current Age"
+                  fullWidth
+                  value={selectedRow.age}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, age: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Current School"
+                  fullWidth
+                  value={selectedRow.currentSchool}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, currentSchool: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Current Class"
+                  fullWidth
+                  value={selectedRow.currentClass}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, currentClass: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Admission Sought For Class"
+                  fullWidth
+                  value={selectedRow.soughtClass}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, soughtClass: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Mother's Name"
+                  fullWidth
+                  value={selectedRow.motherName}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, motherName: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Father's Name"
+                  fullWidth
+                  value={selectedRow.fatherName}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, fatherName: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Mobile No"
+                  fullWidth
+                  value={selectedRow.mobile}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, mobile: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Email"
+                  fullWidth
+                  value={selectedRow.email}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, email: e.target.value })
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  label="Residential Address"
+                  fullWidth
+                  multiline
+                  rows={2}
+                  value={selectedRow.address}
+                  onChange={(e) =>
+                    setSelectedRow({ ...selectedRow, address: e.target.value })
+                  }
+                />
+              </Grid>
+            </Grid>
+          )}
         </DialogContent>
 
-        <DialogActions sx={{ justifyContent: "flex-end", gap: 1 }}>
-          <StyledButton onClick={() => setOpen(false)} variant="outlined">
+        <DialogActions sx={{ p: 2 }}>
+          <CancelButton variant="outlined" onClick={handleClose}>
             Cancel
-          </StyledButton>
-          <StyledButton onClick={handleSave} variant="contained">
+          </CancelButton>
+          <OrangeredButton variant="contained" onClick={handleSave}>
             Save
-          </StyledButton>
+          </OrangeredButton>
         </DialogActions>
       </Dialog>
     </div>
