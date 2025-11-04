@@ -18,6 +18,15 @@ import SalesPipelineScreen from "./components/infrastructure/SalesPipelineScreen
 import AppointmentsScreen from "./components/infrastructure/AppointmentsScreen";
 import AnalyticsScreen from "./components/infrastructure/AnalyticsScreen";
 import ObjectionHandler from "./components/infrastructure/ObjectionHandler";
+import SalesDashboard from "./components/infrastructure/sales/SalesDashboard";
+import DriverManagement from "./components/transport/DriverManagement";
+import StudentRoutes from "./components/transport/StudentRoutes";
+import TripTracking from "./components/transport/TripTracking";
+import ParentTrackingWidget from "./components/transport/ParentTrackingWidget";
+import TransportDashboard from "./components/transport/TransportDashboard";
+import RouteManagement from "./components/transport/RouteManagement";
+import AlertsAndSafety from "./components/transport/AlertsAndSafety";
+import TransportFinance from "./components/transport/TransportFinance";
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -27,7 +36,7 @@ function LayoutWrapper() {
     <div className="flex flex-col h-screen">
       {!hideLayout && <Navbar />}
       <div className="flex flex-1">  
-        {!hideLayout && <Sidebar role="developer" businessType="infra"/>}
+        {!hideLayout && <Sidebar role="developer" businessType="school"/>}
         <main
           className={`flex-1 ${
             hideLayout ? "bg-white" : "bg-[#E6EBF0] p-6 overflow-auto"
@@ -50,6 +59,18 @@ function LayoutWrapper() {
             <Route path="/infra/appointments" element={<AppointmentsScreen />} />
             <Route path="/infra/analytics" element={<AnalyticsScreen />} />
             <Route path="/infra/objection-ai" element={<ObjectionHandler />} />
+            <Route path="/infra/sales" element={<SalesDashboard />} />
+
+             <Route path="/transport/dashboard" element={<TransportDashboard />} />
+            <Route path="/transport/drivers" element={<DriverManagement />} />
+            <Route path="transport/students" element={<StudentRoutes />} />
+            <Route path="/transport/routes" element={<RouteManagement />} />
+            <Route path="/transport/trip-tracking" element={<TripTracking />} />
+            <Route path="/transport/parent-app" element={<ParentTrackingWidget />} />
+            <Route path="/transport/alerts" element={<AlertsAndSafety />} />
+            <Route path="/transport/finance" element={<TransportFinance />} />
+
+
 
 
           </Routes>
