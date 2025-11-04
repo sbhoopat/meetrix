@@ -13,6 +13,11 @@ import StudentAssignments from "./studentportal/StudentAssignments";
 import StudentGPA from "./studentportal/StudentGPA";
 import NotificationCenter from "./studentportal/NotificationCenter";
 import AttendanceScreen from "./studentportal/AttendanceScreen";
+import CustomerManagementScreen from "./components/infrastructure/CustomerManagementScreen";
+import SalesPipelineScreen from "./components/infrastructure/SalesPipelineScreen";
+import AppointmentsScreen from "./components/infrastructure/AppointmentsScreen";
+import AnalyticsScreen from "./components/infrastructure/AnalyticsScreen";
+import ObjectionHandler from "./components/infrastructure/ObjectionHandler";
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -20,14 +25,13 @@ function LayoutWrapper() {
 
   return (
     <div className="flex flex-col h-screen">
-        
       {!hideLayout && <Navbar />}
       <div className="flex flex-1">  
-        {!hideLayout && <Sidebar role="developer"/>}
+        {!hideLayout && <Sidebar role="developer" businessType="infra"/>}
         <main
           className={`flex-1 ${
             hideLayout ? "bg-white" : "bg-[#E6EBF0] p-6 overflow-auto"
-          }`}  
+          }`} 
         >
           <Routes>
             <Route path="/" element={<Home />} />
@@ -40,6 +44,13 @@ function LayoutWrapper() {
             <Route path="student/gpa" element={<StudentGPA />} />
             <Route path="student/notifications" element={<NotificationCenter />} />
             <Route path="student/attendance" element={<AttendanceScreen />} />
+            {/* Infrastructure CRM */}
+            <Route path="/infra/customers" element={<CustomerManagementScreen />} />
+            <Route path="/infra/pipeline" element={<SalesPipelineScreen />} />
+            <Route path="/infra/appointments" element={<AppointmentsScreen />} />
+            <Route path="/infra/analytics" element={<AnalyticsScreen />} />
+            <Route path="/infra/objection-ai" element={<ObjectionHandler />} />
+
 
           </Routes>
         </main>

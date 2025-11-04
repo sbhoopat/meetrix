@@ -7,10 +7,10 @@ body {
   @apply bg-gray-50 text-gray-800;
 }
 
-.MuiButton-textPrimary{
+/* .MuiButton-textPrimary{
   color: #002133 !important;
   color: white;
-}
+} */
 /* .MuiButtonBase-root:hover{
   color: white !important;
 } */
@@ -67,6 +67,9 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
 }
+.gap-3 {
+    gap: 0.5rem;
+}
 
 .card-details {
   font-size: 0.9rem;
@@ -74,7 +77,7 @@ body {
 }
 .w-fit-content{
   width: fit-content;
-  min-width: 250px;
+      min-width: 250px;
 }
 
 /* Style for present days */

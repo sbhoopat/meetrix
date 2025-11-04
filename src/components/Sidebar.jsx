@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next"; // Import i18n
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import {
   FaHome,
@@ -10,43 +10,36 @@ import {
   FaPlusCircle,
   FaListUl,
   FaUsers,
-} from "react-icons/fa"; // Import icons
+  FaBuilding,
+  FaChartBar,
+  FaUsersCog,
+  FaCalendarCheck,
+  FaRobot,
+  FaProjectDiagram,
+} from "react-icons/fa";
 
-export default function Sidebar({ role = "user" }) {
-  const { t } = useTranslation(); // Initialize i18n translation function
+export default function Sidebar({ role = "user", businessType = "school" }) {
+  const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [openAdmin, setOpenAdmin] = useState(false);
   const [openDeveloper, setOpenDeveloper] = useState(false);
-  const [openStudent, setOpenStudent] = useState(false); // Add state for student portal
-  const [clickedOutside, setClickedOutside] = useState(false); // Track clicks outside the menu
+  const [openStudent, setOpenStudent] = useState(false);
+  const [openInfrastructure, setOpenInfrastructure] = useState(false);
+  const menuRef = useRef(null);
 
-  const menuRef = useRef(null); // Reference for the menu
   const navItems = [
-    { name: t("home"), path: "/", icon: <FaHome size={18} /> }, // Use t() to get the translation for Home
+    { name: t("home"), path: "/", icon: <FaHome size={18} /> },
   ];
 
   const adminSubmenu = [
-    {
-      name: t("staff"), // Use t() for translating 'Staff'
-      path: "/admin/staff",
-      icon: <FaUsers size={14} />,
-    },
+    { name: t("staff"), path: "/admin/staff", icon: <FaUsers size={14} /> },
   ];
 
   const developerSubmenu = [
-    {
-      name: t("createBusiness"), // Translate "Create Business"
-      path: "/developer/create-business",
-      icon: <FaPlusCircle size={14} />,
-    },
-    {
-      name: t("viewBusiness"), // Translate "View Business"
-      path: "/developer/view-businesses",
-      icon: <FaListUl size={14} />,
-    },
+    { name: t("createBusiness"), path: "/developer/create-business", icon: <FaPlusCircle size={14} /> },
+    { name: t("viewBusiness"), path: "/developer/view-businesses", icon: <FaListUl size={14} /> },
   ];
 
-  // Student Portal Submenu
   const studentPortalSubmenu = [
     { name: t("dashboard"), path: "/student/dashboard", icon: <FaHome size={14} /> },
     { name: t("upcomingAssignments"), path: "/student/upcoming-assignments", icon: <FaListUl size={14} /> },
@@ -55,18 +48,28 @@ export default function Sidebar({ role = "user" }) {
     { name: t("attendance"), path: "/student/attendance", icon: <FaUsers size={14} /> },
   ];
 
-  // Visibility logic
+  // 🏗 Infrastructure CRM submenu
+  const infrastructureSubmenu = [
+    { name: t("customerManagement"), path: "/infra/customers", icon: <FaUsersCog size={14} /> },
+    { name: t("salesPipeline"), path: "/infra/pipeline", icon: <FaProjectDiagram size={14} /> },
+    { name: t("appointments"), path: "/infra/appointments", icon: <FaCalendarCheck size={14} /> },
+    { name: t("analytics"), path: "/infra/analytics", icon: <FaChartBar size={14} /> },
+    { name: t("aiObjectionHandler"), path: "/infra/objection-ai", icon: <FaRobot size={14} /> },
+  ];
+
   const canSeeDeveloperMenu = role === "developer";
   const canSeeAdminMenu = role === "admin" || role === "developer";
-  const canSeeStudentMenu = role === "admin" || role === "developer" || role === "user"; // Assuming students have "user" role
+  const canSeeStudentMenu = ["admin", "developer", "user"].includes(role) && businessType === "school";
+  const canSeeInfrastructureMenu = (role === "admin" || role === "developer") && businessType === "infra";
 
-  // Close submenus when clicking outside
+  // 🔒 Close submenus when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setOpenAdmin(false);
         setOpenDeveloper(false);
         setOpenStudent(false);
+        setOpenInfrastructure(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -79,7 +82,7 @@ export default function Sidebar({ role = "user" }) {
         className={`${
           isCollapsed ? "w-16" : "w-56"
         } bg-white text-[#002133] flex flex-col py-4 transition-all duration-300 shadow-lg relative z-20`}
-        ref={menuRef} // Attach the ref for detecting clicks outside
+        ref={menuRef}
       >
         {/* Collapse Toggle */}
         <button
@@ -90,7 +93,11 @@ export default function Sidebar({ role = "user" }) {
         </button>
 
         {/* Header */}
-        <div className={`flex items-center gap-2 px-4 mb-8 transition-all duration-300 ${isCollapsed ? "justify-center" : ""}`}>
+        <div
+          className={`flex items-center gap-2 px-4 mb-8 transition-all duration-300 ${
+            isCollapsed ? "justify-center" : ""
+          }`}
+        >
           {!isCollapsed && <h1 className="text-lg font-semibold text-[#002133]">{t("menu")}</h1>}
         </div>
 
@@ -103,7 +110,9 @@ export default function Sidebar({ role = "user" }) {
               to={item.path}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-md font-medium transition-all duration-200 ${
-                  isActive ? "bg-[#e03e00] text-white shadow-md" : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
+                  isActive
+                    ? "bg-[#e03e00] text-white shadow-md"
+                    : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
                 }`
               }
             >
@@ -114,131 +123,50 @@ export default function Sidebar({ role = "user" }) {
 
           {/* Admin Menu */}
           {canSeeAdminMenu && (
-            <div className="relative">
-              <button
-                onClick={() => setOpenAdmin(!openAdmin)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-md font-medium transition-all duration-200 ${
-                  openAdmin ? "bg-[#e03e00] text-white" : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`flex justify-center ${isCollapsed ? "w-full" : "w-6"}`}>{<FaUserShield size={18} />}</span>
-                  {!isCollapsed && <span>{t("admin")}</span>}
-                </div>
-
-                {!isCollapsed && (
-                  <span className="ml-auto">
-                    {openAdmin ? <FaChevronLeft size={12} /> : <FaChevronRight size={12} />}
-                  </span>
-                )}
-              </button>
-      
-              {openAdmin && !isCollapsed && (
-                <div className="absolute left-[230px] top-0 bg-white shadow-xl rounded-lg border border-gray-200 py-2 px-2 w-48 z-50 w-fit-content">
-                  {adminSubmenu.map((sub) => (
-                    <NavLink
-                      key={sub.name}
-                      to={sub.path}
-                      onClick={() => setOpenAdmin(false)}
-                      className={({ isActive }) =>
-                        `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
-                          isActive ? "bg-[#e03e00] text-white" : "text-[#002133] hover:bg-[#ffe5dc]"
-                        }`
-                      }
-                    >
-                      {sub.icon}
-                      <span>{sub.name}</span>
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
+            <DropdownMenu
+              title={t("admin")}
+              icon={<FaUserShield size={18} />}
+              isCollapsed={isCollapsed}
+              isOpen={openAdmin}
+              setIsOpen={setOpenAdmin}
+              submenu={adminSubmenu}
+            />
           )}
 
-          {/* Developer Menu */}
-          {canSeeDeveloperMenu && (
-            <div className="relative">
-              <button
-                onClick={() => setOpenDeveloper(!openDeveloper)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-md font-medium transition-all duration-200 ${
-                  openDeveloper ? "bg-[#e03e00] text-white" : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`flex justify-center ${isCollapsed ? "w-full" : "w-6"}`}>{<FaCodeBranch size={18} />}</span>
-                  {!isCollapsed && <span>{t("developer")}</span>}
-                </div>
-
-                {!isCollapsed && (
-                  <span className="ml-auto">
-                    {openDeveloper ? <FaChevronLeft size={12} /> : <FaChevronRight size={12} />}
-                  </span>
-                )}
-              </button>
-
-              {openDeveloper && !isCollapsed && (
-                <div className="absolute left-[230px] top-0 bg-white shadow-xl rounded-lg border border-gray-200 py-2 px-2 w-48 z-50 w-fit-content">
-                  {developerSubmenu.map((sub) => (
-                    <NavLink
-                      key={sub.name}
-                      to={sub.path}
-                      onClick={() => setOpenDeveloper(false)}
-                      className={({ isActive }) =>
-                        `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
-                          isActive ? "bg-[#e03e00] text-white" : "text-[#002133] hover:bg-[#ffe5dc]"
-                        }`
-                      }
-                    >
-                      {sub.icon}
-                      <span>{sub.name}</span>
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Student Portal Menu */}
+          {/* Student Portal */}
           {canSeeStudentMenu && (
-            <div className="relative">
-              <button
-                onClick={() => setOpenStudent(!openStudent)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-md font-medium transition-all duration-200 ${
-                  openStudent ? "bg-[#e03e00] text-white" : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`flex justify-center ${isCollapsed ? "w-full" : "w-6"}`}>{<FaUsers size={18} />}</span>
-                  {!isCollapsed && <span>{t("studentPortal")}</span>}
-                </div>
+            <DropdownMenu
+              title={t("studentPortal")}
+              icon={<FaUsers size={18} />}
+              isCollapsed={isCollapsed}
+              isOpen={openStudent}
+              setIsOpen={setOpenStudent}
+              submenu={studentPortalSubmenu}
+            />
+          )}
 
-                {!isCollapsed && (
-                  <span className="ml-auto">
-                    {openStudent ? <FaChevronLeft size={12} /> : <FaChevronRight size={12} />}
-                  </span>
-                )}
-              </button>
+          {/* Infrastructure CRM */}
+          {canSeeInfrastructureMenu && (
+            <DropdownMenu
+              title={t("infrastructureCRM")}
+              icon={<FaBuilding size={18} />}
+              isCollapsed={isCollapsed}
+              isOpen={openInfrastructure}
+              setIsOpen={setOpenInfrastructure}
+              submenu={infrastructureSubmenu}
+            />
+          )}
 
-              {openStudent && !isCollapsed && (
-                <div className="absolute left-[230px] top-0 bg-white shadow-xl rounded-lg border border-gray-200 py-2 px-2 w-48 z-50 w-fit-content">
-                  {studentPortalSubmenu.map((sub) => (
-                    <NavLink
-                      key={sub.name}
-                      to={sub.path}
-                      onClick={() => setOpenStudent(false)}
-                      className={({ isActive }) =>
-                        `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
-                          isActive ? "bg-[#e03e00] text-white" : "text-[#002133] hover:bg-[#ffe5dc]"
-                        }`
-                      }
-                    >
-                      {sub.icon}
-                      <span>{sub.name}</span>
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
+          {/* 👨‍💻 Developer Menu (Now Last) */}
+          {canSeeDeveloperMenu && (
+            <DropdownMenu
+              title={t("developer")}
+              icon={<FaCodeBranch size={18} />}
+              isCollapsed={isCollapsed}
+              isOpen={openDeveloper}
+              setIsOpen={setOpenDeveloper}
+              submenu={developerSubmenu}
+            />
           )}
         </nav>
 
@@ -247,6 +175,48 @@ export default function Sidebar({ role = "user" }) {
           {!isCollapsed && <p className="truncate">{t("footerText")}</p>}
         </div>
       </aside>
+    </div>
+  );
+}
+
+// 🧩 Reusable Dropdown Menu Component
+function DropdownMenu({ title, icon, submenu, isCollapsed, isOpen, setIsOpen }) {
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full flex items-center justify-between px-3 py-2 rounded-md font-medium transition-all duration-200 ${
+          isOpen ? "bg-[#e03e00] text-white" : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <span className={`flex justify-center ${isCollapsed ? "w-full" : "w-6"}`}>{icon}</span>
+          {!isCollapsed && <span>{title}</span>}
+        </div>
+        {!isCollapsed && (
+          <span className="ml-auto">{isOpen ? <FaChevronLeft size={12} /> : <FaChevronRight size={12} />}</span>
+        )}
+      </button>
+
+      {isOpen && !isCollapsed && (
+        <div className="absolute left-[230px] top-0 bg-white shadow-xl rounded-lg border border-gray-200 py-2 px-2 w-60 z-50">
+          {submenu.map((sub) => (
+            <NavLink
+              key={sub.name}
+              to={sub.path}
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
+                  isActive ? "bg-[#e03e00] text-white" : "text-[#002133] hover:bg-[#ffe5dc]"
+                }`
+              }
+            >
+              {sub.icon}
+              <span>{sub.name}</span>
+            </NavLink>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
