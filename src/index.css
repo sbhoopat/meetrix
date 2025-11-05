@@ -70,6 +70,9 @@ body {
 .gap-3 {
     gap: 0.5rem;
 }
+.leaflet-container {
+  z-index: 1 !important;
+}
 
 .card-details {
   font-size: 0.9rem;

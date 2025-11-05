@@ -89,11 +89,11 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
     path: "/transport/students",
     icon: <FaChild size={14} />,
   },
-  {
-    name: t("tripRouteManagement"),
-    path: "/transport/routes",
-    icon: <FaRoute size={14} />,
-  },
+  // {
+  //   name: t("tripRouteManagement"),
+  //   path: "/transport/routes",
+  //   icon: <FaRoute size={14} />,
+  // },
   {
     name: t("parentApp"),
     path: "/transport/parent-app",

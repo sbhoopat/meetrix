@@ -2,7 +2,8 @@
 import ReactDOM from 'react-dom/client';
 import "./i18n"; 
 import './index.css'; 
-import "react-calendar/dist/Calendar.css";  
+import "react-calendar/dist/Calendar.css"; 
+import "leaflet/dist/leaflet.css"; 
 
 import { StyledEngineProvider } from "@mui/material/styles";
 import App from "./App";
