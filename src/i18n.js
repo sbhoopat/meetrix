@@ -118,7 +118,7 @@ i18n
           parentApp: "Parent App",
           tripTracking: "Trip Tracking",
           safetyAlerts: "Safety Alerts",
-          finance: "Finance",
+          finance: "Finance Dashboard",
         },
       },
 
@@ -235,7 +235,7 @@ i18n
           parentApp: "తల్లిదండ్రుల యాప్",
           tripTracking: "ప్రయాణ ట్రాకింగ్",
           safetyAlerts: "భద్రత హెచ్చరికలు",
-          finance: "ఆర్థిక వ్యవహారాలు",
+          finance: "ఆర్థిక వ్యవహారాల డ్యాష్‌బోర్డ్",
         },
       },
     },

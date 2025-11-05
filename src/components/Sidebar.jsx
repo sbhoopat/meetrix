@@ -74,10 +74,10 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
   ];
 
   const transportSubmenu = [
-  {
-    name: t("dashboard"),
-    path: "/transport/dashboard",
-    icon: <FaTachometerAlt size={14} />,
+   {
+    name: t("finance"),
+    path: "/transport/finance",
+    icon: <FaMoneyBillWave size={14} />,
   },
   {
     name: t("driverManagement"),
@@ -114,11 +114,7 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
   //   path: "/transport/analytics",
   //   icon: <FaChartLine size={14} />,
   // },
-  {
-    name: t("finance"),
-    path: "/transport/finance",
-    icon: <FaMoneyBillWave size={14} />,
-  },
+ 
 ];
 
   const infrastructureSubmenu = [

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import io from "socket.io-client";
 import "leaflet/dist/leaflet.css";
+import LiveBusLocationSender from "./locationsender/LiveBusLocationSender";
 
 // Initialize socket.io
 const socket = io("http://localhost:5000");
@@ -27,16 +28,16 @@ export default function TripTracking() {
   const [map, setMap] = useState(null);
   const [buses, setBuses] = useState([]);
   const [currentStopIndex, setCurrentStopIndex] = useState(0);
-
-  // Example static route (can be fetched from backend)
+ 
+  // Example static route (can be fetched from backend) 
   const routeStops = [
     { id: 1, name: "School", lat: 17.421, lng: 78.469 },
     { id: 2, name: "Stop 1", lat: 17.425, lng: 78.475 },
     { id: 3, name: "Stop 2", lat: 17.428, lng: 78.482 },
     { id: 4, name: "Stop 3", lat: 17.433, lng: 78.490 },
     { id: 5, name: "Final Stop", lat: 17.438, lng: 78.495 },
-  ];
-
+  ]; 
+   
   useEffect(() => {
     // Initialize map only once
     if (!mapRef.current) {
@@ -105,6 +106,7 @@ export default function TripTracking() {
       <div id="map" className="w-full h-[600px] rounded-lg shadow-md"></div>
       <div className="mt-4">
         <h3 className="text-lg font-semibold mb-2">Trip Progress</h3>
+        <LiveBusLocationSender/>
         <div className="flex flex-wrap gap-3">
           {routeStops.map((stop, index) => {
             const color =

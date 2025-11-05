@@ -1,10 +1,10 @@
 import React from "react";
-import DataTable from "../components/DataTable";
+import AdmissionEnquiry from "../components/AdmissionEnquiry";
 
 export default function Home() {
   return (
     <div>
-      <DataTable />
+      <AdmissionEnquiry />
     </div>
   );
 }

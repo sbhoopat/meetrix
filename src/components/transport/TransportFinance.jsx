@@ -193,10 +193,11 @@ const TransportFinance = () => {
           Transport Finance Dashboard
         </h2>
         <div className="flex items-center gap-3">
-          <Typography variant="h6" color="#FF4500">
-            ₹ {totalAmount.toLocaleString("en-IN")}
-          </Typography>
           <FaRupeeSign size={22} className="text-[#FF4500]" />
+          <Typography variant="h6" color="#FF4500">
+             {totalAmount.toLocaleString("en-IN")}
+          </Typography>
+          
         </div>
       </div>
 
