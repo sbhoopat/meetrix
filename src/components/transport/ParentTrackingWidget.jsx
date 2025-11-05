@@ -10,13 +10,12 @@ import {
 } from "react-icons/fa";
 import { DataGrid } from "@mui/x-data-grid";
 import loadRazorpayScript from "../payment/loadRazorpay";
-
 export default function ParentTrackingPage({ studentId = "STU12345" }) {
   const [tripData, setTripData] = useState(null);
   const [routes, setRoutes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isOpted, setIsOpted] = useState(false);
+  const [isOpted, setIsOpted] = useState(true);
   const [optDialog, setOptDialog] = useState(false);
   const [formData, setFormData] = useState({
     studentId,
@@ -27,8 +26,8 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
 
   const [optedPlans, setOptedPlans] = useState([]);
 
-  // Fetch student transport data
   useEffect(() => {
+    // Fetch transport data
     const fetchTripData = async () => {
       try {
         const res = await axios.get(
@@ -354,21 +353,19 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
       )}
 
       {/* DataGrid of opted plans */}
-      {isOpted && optedPlans.length > 0 && (
-        <div className="mt-6 w-full">
-          <h3 className="text-xl font-semibold mb-4">Your Opted Plans</h3>
-          <div style={{ height: 400, width: "100%" }}>
-            <DataGrid
-              rows={optedPlans}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              checkboxSelection
-              disableColumnMenu
-            />
-          </div>
+      <div className="mt-6 w-full">
+        <h3 className="text-xl font-semibold mb-4">Your Opted Plans</h3>
+        <div style={{ height: 400, width: "100%" }}>
+          <DataGrid
+            rows={optedPlans}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+            disableColumnMenu
+          />
         </div>
-      )}
+      </div>
     </div>
   );
 }
