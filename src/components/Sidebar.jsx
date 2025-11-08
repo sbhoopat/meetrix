@@ -116,7 +116,7 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
 
       <aside
         className={`${
-          mobileMenuOpen ? "left-0" : "-left-56"
+          mobileMenuOpen ? "left-0" : "-left-80"
         } sm:left-0 transition-all duration-300 bg-white text-[#002133] flex flex-col py-4 shadow-lg relative z-20 absolute sm:relative`}
         ref={menuRef}
       >
