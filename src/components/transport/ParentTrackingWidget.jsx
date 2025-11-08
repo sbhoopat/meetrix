@@ -1,4 +1,3 @@
-// ParentTrackingPage.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -10,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { DataGrid } from "@mui/x-data-grid";
 import loadRazorpayScript from "../payment/loadRazorpay";
+
 export default function ParentTrackingPage({ studentId = "STU12345" }) {
   const [tripData, setTripData] = useState(null);
   const [routes, setRoutes] = useState([]);
@@ -25,6 +25,45 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
   });
 
   const [optedPlans, setOptedPlans] = useState([]);
+
+  // Mocked Routes Data
+  const mockedRoutes = [
+    {
+      id: "route1",
+      name: "Route 1 - Miyapur to JNTU",
+      distance: "15 km",
+      estimatedTime: "30 mins",
+      stops: [
+        { id: 1, name: "Miyapur", lat: 17.4981608, lng: 78.3567628 },
+        { id: 2, name: "Mayuri Nagar", lat: 17.5128, lng: 78.3686 },
+        { id: 3, name: "Nizampet", lat: 17.5164805, lng: 78.3766275 },
+        { id: 4, name: "JNTUH", lat: 17.495924, lng: 78.392632 },
+      ],
+      driver: {
+        name: "Harris Whitaker",
+        phoneNumber: "+1234567890",
+        status: "In Transit",
+        profilePicture: "https://randomuser.me/api/portraits/men/64.jpg",
+      },
+    },
+    {
+      id: "route2",
+      name: "Route 2 - City Center to Airport",
+      distance: "18 km",
+      estimatedTime: "40 mins",
+      stops: [
+        { id: 1, name: "City Center", lat: 17.450, lng: 78.450 },
+        { id: 2, name: "Suburb", lat: 17.455, lng: 78.460 },
+        { id: 3, name: "Airport", lat: 17.465, lng: 78.475 },
+      ],
+      driver: {
+        name: "John Doe",
+        phoneNumber: "+1234567891",
+        status: "In Transit",
+        profilePicture: "https://randomuser.me/api/portraits/men/65.jpg",
+      },
+    },
+  ];
 
   useEffect(() => {
     // Fetch transport data
@@ -44,13 +83,10 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
       }
     };
 
+    // Mock fetch routes data
     const fetchRoutes = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/transport/routes`);
-        setRoutes(res.data || []);
-      } catch (err) {
-        console.error("Failed to fetch routes:", err);
-      }
+      setRoutes(mockedRoutes);  // Replace with real API call if available
+      setLoading(false);
     };
 
     fetchTripData();
@@ -351,21 +387,6 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
           </div>
         </div>
       )}
-
-      {/* DataGrid of opted plans */}
-      <div className="mt-6 w-full">
-        <h3 className="text-xl font-semibold mb-4">Your Opted Plans</h3>
-        <div style={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={optedPlans}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            disableColumnMenu
-          />
-        </div>
-      </div>
     </div>
   );
 }

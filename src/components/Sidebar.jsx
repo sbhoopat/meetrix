@@ -74,10 +74,10 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
   ];
 
   const transportSubmenu = [
-   {
+  {
     name: t("finance"),
     path: "/transport/finance",
-    icon: <FaMoneyBillWave size={14} />,
+    icon: <FaTachometerAlt size={14} />,
   },
   {
     name: t("driverManagement"),
