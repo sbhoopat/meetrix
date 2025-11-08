@@ -34,13 +34,14 @@ import {
 export default function Sidebar({ role = "user", businessType = "school" }) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Mobile menu state
   const [openAdmin, setOpenAdmin] = useState(false);
   const [openDeveloper, setOpenDeveloper] = useState(false);
   const [openStudent, setOpenStudent] = useState(false);
   const [openTransport, setOpenTransport] = useState(false);
   const [openInfrastructure, setOpenInfrastructure] = useState(false);
   const [openSales, setOpenSales] = useState(false);
+  const [isMobile, setIsMobile] = useState(false); // Track if the window is mobile or not
   const menuRef = useRef(null);
 
   const navItems = [{ name: t("home"), path: "/", icon: <FaHome size={18} /> }];
@@ -100,24 +101,31 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobile(true);
+        setMobileMenuOpen(true); // Open the mobile menu when in mobile view
+      } else {
+        setIsMobile(false);
+        setMobileMenuOpen(false); // Close the mobile menu when in desktop view
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call initially to set the correct state
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
+    setIsCollapsed(!isCollapsed);
   };
 
   return (
-    <div className="relative flex">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={toggleMobileMenu}
-        className="sm:hidden text-2xl absolute top-6 left-4 z-20"
-      >
-        <FaBars />
-      </button>
-
+    <div className={mobileMenuOpen && !isCollapsed ? "absolute flex" : "relative flex"}>
       <aside
         className={`${
           mobileMenuOpen ? "left-0" : "-left-full"

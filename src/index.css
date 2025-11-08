@@ -104,3 +104,41 @@ body {
     --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+/* Sidebar for mobile devices */
+@media (max-width: 768px) {
+  /* Ensure the sidebar is positioned absolutely and does not shrink */
+  .sidebar {
+    position: absolute; /* Make sidebar float above the map */
+    top: 0;
+    left: 0;
+    width: 250px; /* Adjust width if necessary */
+    height: 100%;
+    background-color: #f4f4f4; /* Sidebar background */
+    z-index: 9999; /* Ensure sidebar is above map */
+    transform: translateX(0); /* Ensure it's visible */
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+  }
+
+  /* Adjust map container to accommodate the sidebar */
+  .map-container {
+    margin-left: 250px; /* Add space for the sidebar */
+    transition: margin-left 0.3s ease; /* Smooth transition when sidebar appears */
+  }
+
+  /* Toggle button for mobile sidebar */
+  .sidebar-toggle {
+    display: block; /* Ensure the toggle button is visible */
+  }
+}
+
+/* Sidebar for desktop */
+@media (min-width: 769px) {
+  .sidebar {
+    position: relative; /* Normal flow for desktop */
+    margin-left: 0; /* No need for absolute positioning */
+  }
+
+  .map-container {
+    margin-left: 0; /* No change for desktop */
+  }
+}
