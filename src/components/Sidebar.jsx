@@ -34,7 +34,7 @@ import {
 export default function Sidebar({ role = "user", businessType = "school" }) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Mobile menu state
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAdmin, setOpenAdmin] = useState(false);
   const [openDeveloper, setOpenDeveloper] = useState(false);
   const [openStudent, setOpenStudent] = useState(false);
@@ -104,6 +104,10 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <div className="relative flex">
       {/* Mobile Menu Button */}
@@ -116,7 +120,7 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
 
       <aside
         className={`${
-          mobileMenuOpen ? "left-0" : "-left-80"
+          mobileMenuOpen ? "left-0" : "-left-full"
         } sm:left-0 transition-all duration-300 bg-white text-[#002133] flex flex-col py-4 shadow-lg relative z-20 absolute sm:relative`}
         ref={menuRef}
       >
@@ -138,6 +142,7 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
             <NavLink
               key={item.name}
               to={item.path}
+              onClick={closeMobileMenu}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-md font-medium transition-all duration-200 ${
                   isActive ? "bg-[#e03e00] text-white shadow-md" : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
@@ -180,7 +185,7 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
       </aside>
     </div>
   );
-}
+};
 
 function DropdownMenu({ title, icon, submenu, isCollapsed, isOpen, setIsOpen }) {
   return (
