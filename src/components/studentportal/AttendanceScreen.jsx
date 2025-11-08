@@ -37,7 +37,6 @@ const AttendanceScreen = () => {
 
   // Function to add a class to the calendar tile based on attendance status
   const tileClassName = ({ date, view }) => {
-    // Only apply the custom classes for the month view
     if (view === "month") {
       const attendance = attendanceData.find((item) => {
         return (
@@ -46,15 +45,15 @@ const AttendanceScreen = () => {
           item.date.getFullYear() === date.getFullYear()
         );
       });
-      
+
       if (attendance) {
         switch (attendance.status) {
           case "present":
-            return "present-day"; // Custom class for present
+            return "present-day";
           case "absent":
-            return "absent-day"; // Custom class for absent
+            return "absent-day";
           case "holiday":
-            return "holiday-day"; // Custom class for holiday
+            return "holiday-day";
           default:
             return "";
         }
@@ -64,24 +63,28 @@ const AttendanceScreen = () => {
   };
 
   return (
-    <div className="p-6 bg-white min-h-screen">
-      <h1 className="text-3xl font-semibold text-[#002133] mb-6">Attendance</h1>
+    <div className="p-6 bg-white min-h-screen flex flex-col space-y-6">
+      <h1 className="text-3xl font-semibold text-[#002133] text-center md:text-left">Attendance</h1>
 
-      {subjects.map((subject, index) => (
-        <AttendanceCard
-          key={index}
-          subject={subject.name}
-          attendancePercentage={subject.attendancePercentage}
-          onApplyAttendance={handleApplyAttendance}
-        />
-      ))}
+      {/* Attendance Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {subjects.map((subject, index) => (
+          <AttendanceCard
+            key={index}
+            subject={subject.name}
+            attendancePercentage={subject.attendancePercentage}
+            onApplyAttendance={handleApplyAttendance}
+          />
+        ))}
+      </div>
 
       {/* Calendar Component */}
-      <div className="mt-6">
+      <div className="mt-6 w-full">
         <Calendar
           onChange={() => {}}
           value={new Date()}
           tileClassName={tileClassName}
+          className="react-calendar w-full"
         />
       </div>
 

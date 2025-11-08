@@ -206,16 +206,13 @@ export default function TripTracking() {
   const handleCallDriver = (phoneNumber) => {
     alert(`📞 Calling driver at ${phoneNumber}...`);
   };
-   
+
   return (
-    <div className="flex p-6 bg-white min-h-screen">
-      
+    <div className="flex flex-col lg:flex-row p-6 bg-white min-h-screen">
       {/* Sidebar */}
-      <div className="w-1/3 p-6 bg-white rounded-lg shadow-xl mr-6">
-       <LiveBusLocationSender/>
-        <h2 className="text-2xl font-semibold mb-4 text-[#002133]">
-          🚌 Live Trip Tracking
-        </h2>
+      <div className="w-full lg:w-1/3 p-6 bg-white rounded-lg shadow-xl mb-6 lg:mb-0 lg:mr-6">
+        <LiveBusLocationSender />
+        <h2 className="text-2xl font-semibold mb-4 text-[#002133]">🚌 Live Trip Tracking</h2>
 
         <div className="space-y-3">
           {routesData.map((route) => (
@@ -260,9 +257,7 @@ export default function TripTracking() {
       </div>
 
       {/* Map Container */}
-      <div className="w-2/3 h-[600px] rounded-lg shadow-md bg-gray-100" id="map"></div>
-
-    
+      <div className="w-full lg:w-2/3 h-[500px] lg:h-[600px] rounded-lg shadow-md bg-gray-100" id="map"></div>
     </div>
   );
 }

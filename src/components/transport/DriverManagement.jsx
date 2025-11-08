@@ -1,4 +1,3 @@
-// DriverManagement.jsx
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
@@ -28,28 +27,63 @@ export default function DriverManagement() {
   };
 
   return (
-    <div className="p-6 bg-white min-h-screen">
+    <div className="p-4 sm:p-6 bg-white min-h-screen">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Driver Management</h2>
-        <Button variant="contained" color="warning" onClick={() => { setSelected({}); setOpen(true); }}>
+        <h2 className="text-xl sm:text-2xl font-semibold text-[#002133]">Driver Management</h2>
+        <Button 
+          variant="contained" 
+          color="warning" 
+          onClick={() => { setSelected({}); setOpen(true); }}
+          className="text-sm sm:text-base"
+        >
           Add Driver
         </Button>
       </div>
 
-      <div style={{ height: 480 }}>
+      {/* Responsive Table */}
+      <div style={{ height: 480 }} className="w-full overflow-x-auto">
         <DataGrid rows={rows} columns={columns} pageSize={10} onRowClick={handleRowClick} />
       </div>
 
+      {/* Dialog for Add/Edit */}
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>{selected?.id ? "Edit Driver" : "Add Driver"}</DialogTitle>
+        <DialogTitle className="text-xl">{selected?.id ? "Edit Driver" : "Add Driver"}</DialogTitle>
         <DialogContent>
-          <TextField label="Name" fullWidth margin="dense" defaultValue={selected?.name || ""} />
-          <TextField label="License" fullWidth margin="dense" defaultValue={selected?.license || ""} />
-          <TextField label="Phone" fullWidth margin="dense" defaultValue={selected?.phone || ""} />
-          <TextField label="Last Training" type="date" fullWidth margin="dense" defaultValue={selected?.lastTraining || ""} InputLabelProps={{ shrink: true }} />
+          <TextField 
+            label="Name" 
+            fullWidth 
+            margin="dense" 
+            defaultValue={selected?.name || ""} 
+            className="text-sm sm:text-base"
+          />
+          <TextField 
+            label="License" 
+            fullWidth 
+            margin="dense" 
+            defaultValue={selected?.license || ""} 
+            className="text-sm sm:text-base"
+          />
+          <TextField 
+            label="Phone" 
+            fullWidth 
+            margin="dense" 
+            defaultValue={selected?.phone || ""} 
+            className="text-sm sm:text-base"
+          />
+          <TextField 
+            label="Last Training" 
+            type="date" 
+            fullWidth 
+            margin="dense" 
+            defaultValue={selected?.lastTraining || ""} 
+            InputLabelProps={{ shrink: true }} 
+            className="text-sm sm:text-base"
+          />
           <div className="mt-3 flex justify-end gap-2">
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button variant="contained" color="warning" onClick={handleSave}>Save</Button>
+            <Button onClick={() => setOpen(false)} className="text-sm sm:text-base">Cancel</Button>
+            <Button variant="contained" color="warning" onClick={handleSave} className="text-sm sm:text-base">
+              Save
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

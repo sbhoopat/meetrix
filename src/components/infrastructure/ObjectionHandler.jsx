@@ -50,13 +50,13 @@ const ObjectionHandler = () => {
   };
 
   return (
-    <div className="p-6 bg-white min-h-screen flex flex-col">
-      <h1 className="text-3xl font-semibold text-[#002133] mb-6">
+    <div className="p-4 sm:p-6 lg:p-8 bg-white min-h-screen flex flex-col">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-[#002133] mb-6">
         AI Objection Handler
       </h1>
 
       {/* Chat Window */}
-      <div className="flex-1 overflow-y-auto border rounded p-4 bg-gray-50">
+      <div className="flex-1 overflow-y-auto border rounded p-4 bg-gray-50 mb-4 max-h-[60vh] sm:max-h-[70vh]">
         {messages.map((m, i) => (
           <div
             key={i}
@@ -86,9 +86,9 @@ const ObjectionHandler = () => {
       </div>
 
       {/* Input Area */}
-      <div className="mt-4 flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-3 mt-4">
         <textarea
-          className="flex-1 border rounded p-2 resize-none h-12 focus:outline-none"
+          className="flex-1 border p-2 rounded-md resize-none h-12 focus:outline-none w-full"
           placeholder="Ask your question..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -99,9 +99,9 @@ const ObjectionHandler = () => {
           disabled={loading}
           className={`${
             loading ? "bg-gray-400" : "bg-[#FF4500] hover:bg-[#e03e00]"
-          } text-white px-4 py-2 rounded flex items-center gap-2 transition-all`}
+          } text-white px-6 py-2 rounded flex items-center justify-center gap-2 transition-all`}
         >
-          <Send size={16} /> {loading ? "Sending..." : "Send"}
+          <Send size={18} /> {loading ? "Sending..." : "Send"}
         </button>
       </div>
     </div>

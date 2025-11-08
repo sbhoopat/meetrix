@@ -8,11 +8,12 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  Grid,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useAlert } from "./alerts/AlertContext";
 
-const OrangeredButton = styled(Button)({
+const OrangeredButton = styled(Button)(() => ({
   backgroundColor: "#FF4500",
   color: "#fff",
   fontWeight: 600,
@@ -20,11 +21,11 @@ const OrangeredButton = styled(Button)({
   "&:hover": {
     backgroundColor: "#e03e00",
   },
-});
+}));
 
 export default function CreateBusiness() {
   const [businessType, setBusinessType] = useState("School");
-  const { showAlert } = useAlert(); 
+  const { showAlert } = useAlert();
 
   const [schoolName, setSchoolName] = useState("");
   const [infraName, setInfraName] = useState("");
@@ -62,21 +63,20 @@ export default function CreateBusiness() {
       setInfraFields(updated);
     }
   };
-    
+
   const handleSave = () => {
     const data =
       businessType === "School"
         ? { name: schoolName, fields: schoolFields }
         : { name: infraName, fields: infraFields };
-  
+
     console.log("Saved Business Data:", { type: businessType, ...data });
-    showAlert(`${businessType} business saved successfully!`,"success")
-  };   
+    showAlert(`${businessType} business saved successfully!`, "success");
+  };
+
   // Determine current fields and name based on selected type
-  const currentName =
-    businessType === "School" ? schoolName : infraName;
-  const currentFields =
-    businessType === "School" ? schoolFields : infraFields;
+  const currentName = businessType === "School" ? schoolName : infraName;
+  const currentFields = businessType === "School" ? schoolFields : infraFields;
 
   const handleNameChange = (value) => {
     if (businessType === "School") setSchoolName(value);
@@ -84,7 +84,7 @@ export default function CreateBusiness() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <Card
         sx={{
           maxWidth: 800,
@@ -92,6 +92,7 @@ export default function CreateBusiness() {
           borderRadius: 3,
           boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
           backgroundColor: "white",
+          padding: "16px",
         }}
       >
         <CardContent>
@@ -107,6 +108,7 @@ export default function CreateBusiness() {
             onChange={(e) => setBusinessType(e.target.value)}
             fullWidth
             margin="normal"
+            variant="outlined"
           >
             <MenuItem value="School">School</MenuItem>
             <MenuItem value="Infrastructure">Infrastructure</MenuItem>
@@ -119,6 +121,7 @@ export default function CreateBusiness() {
             onChange={(e) => handleNameChange(e.target.value)}
             fullWidth
             margin="normal"
+            variant="outlined"
           />
 
           {/* Fields Section */}
@@ -132,56 +135,73 @@ export default function CreateBusiness() {
           </Typography>
 
           {currentFields.map((field, index) => (
-            <div
-              key={index}
-              className="flex flex-col md:flex-row gap-3 items-center mb-3"
-            >
-              <TextField
-                label="Field Name"
-                value={field.fieldName}
-                onChange={(e) =>
-                  handleChangeField(index, "fieldName", e.target.value)
-                }
-                fullWidth
-              />
-              <TextField
-                select
-                label="Field Type"
-                value={field.fieldType}
-                onChange={(e) =>
-                  handleChangeField(index, "fieldType", e.target.value)
-                }
-                fullWidth
-              >
-                <MenuItem value="text">Text</MenuItem>
-                <MenuItem value="date">Date</MenuItem>
-                <MenuItem value="dropdown">Dropdown</MenuItem>
-              </TextField>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={field.isRequired}
-                    onChange={(e) =>
-                      handleChangeField(index, "isRequired", e.target.checked)
-                    }
-                  />
-                }
-                label="Required"
-              />
-            </div>
+            <Grid container spacing={2} key={index} sx={{ mb: 2 }}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  label="Field Name"
+                  value={field.fieldName}
+                  onChange={(e) =>
+                    handleChangeField(index, "fieldName", e.target.value)
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  select
+                  label="Field Type"
+                  value={field.fieldType}
+                  onChange={(e) =>
+                    handleChangeField(index, "fieldType", e.target.value)
+                  }
+                  fullWidth
+                  variant="outlined"
+                >
+                  <MenuItem value="text">Text</MenuItem>
+                  <MenuItem value="date">Date</MenuItem>
+                  <MenuItem value="dropdown">Dropdown</MenuItem>
+                </TextField>
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={field.isRequired}
+                      onChange={(e) =>
+                        handleChangeField(index, "isRequired", e.target.checked)
+                      }
+                    />
+                  }
+                  label="Required"
+                />
+              </Grid>
+            </Grid>
           ))}
 
+          {/* Add Field Button */}
           <Button
             variant="outlined"
             onClick={handleAddField}
-            sx={{ mt: 1, borderColor: "#FF4500", color: "#FF4500" }}
+            sx={{
+              mt: 2,
+              borderColor: "#FF4500",
+              color: "#FF4500",
+              width: "100%",
+            }}
           >
             + Add Field
           </Button>
 
           {/* Save Button */}
-          <div className="flex justify-end mt-8">
-            <OrangeredButton variant="contained" onClick={handleSave}>
+          <div className="flex justify-end mt-6">
+            <OrangeredButton
+              variant="contained"
+              onClick={handleSave}
+              sx={{ width: "100%" }}
+            >
               Save Business
             </OrangeredButton>
           </div>

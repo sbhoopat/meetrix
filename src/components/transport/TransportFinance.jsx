@@ -127,7 +127,6 @@ const TransportFinance = () => {
     { field: "notes", headerName: "Notes", flex: 1.5 },
   ];
 
-  // ✅ Fixed PDF Export (multi-page + no PNG signature error)
   const handleDownloadPDF = async () => {
     const input = pdfRef.current;
     const pdf = new jsPDF("p", "mm", "a4");
@@ -145,11 +144,9 @@ const TransportFinance = () => {
         windowWidth: input.scrollWidth,
       });
 
-      // ✅ Convert to JPEG to avoid PNG decode errors
       const imgData = canvas.toDataURL("image/jpeg", 1.0);
       const imgHeight = (canvas.height * pageWidth) / canvas.width;
 
-      // Header section
       const logoImg = new Image();
       logoImg.src = MeetrixLogo;
 
@@ -187,25 +184,17 @@ const TransportFinance = () => {
 
   return (
     <Box sx={{ p: 4, bgcolor: "white", minHeight: "100vh" }} ref={pdfRef}>
-      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold text-[#002133]">
-          Transport Finance Dashboard
-        </h2>
+        <h2 className="text-2xl font-semibold text-[#002133]">Transport Finance Dashboard</h2>
         <div className="flex items-center gap-3">
           <FaRupeeSign size={22} className="text-[#FF4500]" />
           <Typography variant="h6" color="#FF4500">
              {totalAmount.toLocaleString("en-IN")}
           </Typography>
-          
         </div>
       </div>
 
-      {/* Chart Section */}
-      <Paper
-        elevation={3}
-        sx={{ p: 3, mb: 4, borderRadius: "12px", background: "#f9f9f9" }}
-      >
+      <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: "12px", background: "#f9f9f9" }}>
         <Typography variant="h6" mb={2}>
           Expense Distribution by Category
         </Typography>
@@ -331,6 +320,7 @@ const TransportFinance = () => {
             "&:hover": { borderColor: "#e03e00", color: "#e03e00" },
           }}
         >
+          Download PDF
         </Button>
       </form>
 

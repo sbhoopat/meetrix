@@ -2,51 +2,39 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import {
-  // Core / Navigation
   FaHome,
   FaChevronLeft,
   FaChevronRight,
-
-  // User & Role Management
   FaUserShield,
   FaUsers,
   FaUsersCog,
   FaIdBadge,
   FaUserFriends,
-
-  // Dashboard & Analytics
   FaTachometerAlt,
   FaChartBar,
   FaChartLine,
-
-  // Project & Structure
   FaBuilding,
   FaProjectDiagram,
   FaCodeBranch,
   FaListUl,
   FaPlusCircle,
   FaCalendarCheck,
-
-  // AI & Automation
   FaRobot,
-
-  // Finance & Resources
   FaMoneyBill,
   FaMoneyBillWave,
   FaGasPump,
-
-  // Transport & Safety
   FaBusAlt,
   FaRoute,
   FaMapMarkedAlt,
   FaChild,
   FaBell,
+  FaBars,
 } from "react-icons/fa";
-
 
 export default function Sidebar({ role = "user", businessType = "school" }) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Mobile menu state
   const [openAdmin, setOpenAdmin] = useState(false);
   const [openDeveloper, setOpenDeveloper] = useState(false);
   const [openStudent, setOpenStudent] = useState(false);
@@ -57,9 +45,7 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
 
   const navItems = [{ name: t("home"), path: "/", icon: <FaHome size={18} /> }];
 
-  // 🔧 Submenus
   const adminSubmenu = [{ name: t("staff"), path: "/admin/staff", icon: <FaUsers size={14} /> }];
-
   const developerSubmenu = [
     { name: t("createBusiness"), path: "/developer/create-business", icon: <FaPlusCircle size={14} /> },
     { name: t("viewBusiness"), path: "/developer/view-businesses", icon: <FaListUl size={14} /> },
@@ -74,48 +60,13 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
   ];
 
   const transportSubmenu = [
-  {
-    name: t("finance"),
-    path: "/transport/finance",
-    icon: <FaTachometerAlt size={14} />,
-  },
-  {
-    name: t("driverManagement"),
-    path: "/transport/drivers",
-    icon: <FaIdBadge size={14} />,
-  },
-  {
-    name: t("studentTransport"),
-    path: "/transport/students",
-    icon: <FaChild size={14} />,
-  },
-  // {
-  //   name: t("tripRouteManagement"),
-  //   path: "/transport/routes",
-  //   icon: <FaRoute size={14} />,
-  // },
-  {
-    name: t("parentApp"),
-    path: "/transport/parent-app",
-    icon: <FaUserFriends size={14} />,
-  },
-  {
-    name: t("tripTracking"),
-    path: "/transport/trip-tracking",
-    icon: <FaMapMarkedAlt size={14} />,
-  },
-  {
-    name: t("safetyAlerts"),
-    path: "/transport/alerts",
-    icon: <FaBell size={14} />,
-  },
-  // {
-  //   name: t("aiAnalytics"),
-  //   path: "/transport/analytics",
-  //   icon: <FaChartLine size={14} />,
-  // },
- 
-];
+    { name: t("finance"), path: "/transport/finance", icon: <FaTachometerAlt size={14} /> },
+    { name: t("driverManagement"), path: "/transport/drivers", icon: <FaIdBadge size={14} /> },
+    { name: t("studentTransport"), path: "/transport/students", icon: <FaChild size={14} /> },
+    { name: t("parentApp"), path: "/transport/parent-app", icon: <FaUserFriends size={14} /> },
+    { name: t("tripTracking"), path: "/transport/trip-tracking", icon: <FaMapMarkedAlt size={14} /> },
+    { name: t("safetyAlerts"), path: "/transport/alerts", icon: <FaBell size={14} /> },
+  ];
 
   const infrastructureSubmenu = [
     { name: t("customerManagement"), path: "/infra/customers", icon: <FaUsersCog size={14} /> },
@@ -127,7 +78,6 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
 
   const salesSubmenu = [{ name: t("salesDashboard"), path: "/infra/sales", icon: <FaChartLine size={14} /> }];
 
-  // Access Control
   const canSeeDeveloperMenu = role === "developer";
   const canSeeAdminMenu = role === "admin" || role === "developer";
   const canSeeStudentMenu = ["admin", "developer", "user"].includes(role) && businessType === "school";
@@ -135,7 +85,6 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
   const canSeeInfrastructureMenu = (role === "admin" || role === "developer") && businessType === "infra";
   const canSeeSalesMenu = (role === "admin" || role === "developer") && businessType === "infra";
 
-  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -151,10 +100,24 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
     <div className="relative flex">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={toggleMobileMenu}
+        className="sm:hidden text-2xl absolute top-6 left-4 z-20"
+      >
+        <FaBars />
+      </button>
+
       <aside
-        className={`${isCollapsed ? "w-16" : "w-56"} bg-white text-[#002133] flex flex-col py-4 transition-all duration-300 shadow-lg relative z-20`}
+        className={`${
+          mobileMenuOpen ? "left-0" : "-left-56"
+        } sm:left-0 transition-all duration-300 bg-white text-[#002133] flex flex-col py-4 shadow-lg relative z-20 absolute sm:relative`}
         ref={menuRef}
       >
         {/* Collapse Button */}
@@ -180,11 +143,11 @@ export default function Sidebar({ role = "user", businessType = "school" }) {
                   isActive ? "bg-[#e03e00] text-white shadow-md" : "bg-[#FF4500] text-white hover:bg-[#ff5a1f]"
                 }`
               }
-            > 
+            >
               <span className={`flex justify-center ${isCollapsed ? "w-full" : "w-6"}`}>{item.icon}</span>
-              {!isCollapsed && <span class="text-left">{item.name}</span>}
+              {!isCollapsed && <span>{item.name}</span>}
             </NavLink>
-          ))} 
+          ))}
 
           {canSeeAdminMenu && (
             <DropdownMenu title={t("admin")} icon={<FaUserShield size={18} />} submenu={adminSubmenu} {...{ isCollapsed, isOpen: openAdmin, setIsOpen: setOpenAdmin }} />
@@ -230,7 +193,7 @@ function DropdownMenu({ title, icon, submenu, isCollapsed, isOpen, setIsOpen }) 
       >
         <div className="flex items-center gap-3">
           <span className={`flex justify-center ${isCollapsed ? "w-full" : "w-6"}`}>{icon}</span>
-          {!isCollapsed && <span class="text-left">{title}</span>}
+          {!isCollapsed && <span>{title}</span>}
         </div>
         {!isCollapsed && <span>{isOpen ? <FaChevronLeft size={12} /> : <FaChevronRight size={12} />}</span>}
       </button>

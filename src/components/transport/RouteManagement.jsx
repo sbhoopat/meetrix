@@ -52,7 +52,8 @@ export default function RouteManagement() {
         </button>
       </div>
 
-      <div style={{ height: "600px" }}>
+      {/* Map Container */}
+      <div style={{ height: "calc(100vh - 150px)" }}>
         <Map
           initialViewState={{
             latitude: 17.385,
@@ -62,6 +63,7 @@ export default function RouteManagement() {
           style={{ width: "100%", height: "100%" }}
           mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
         >
+          {/* Markers for stops */}
           {stops.map((stop) => (
             <Marker
               key={stop.id}
@@ -76,6 +78,7 @@ export default function RouteManagement() {
             </Marker>
           ))}
 
+          {/* Popup for selected stop */}
           {selectedStop && (
             <Popup
               latitude={selectedStop.lat}
@@ -95,6 +98,7 @@ export default function RouteManagement() {
             </Popup>
           )}
 
+          {/* Route Line (optimized route) */}
           {routeGeoJSON && (
             <Source id="route" type="geojson" data={routeGeoJSON}>
               <Layer

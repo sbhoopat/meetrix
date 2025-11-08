@@ -269,7 +269,7 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
             <div className="mt-6">
               <button
                 onClick={() => startRazorpayCheckout(plan?.amount || 1500)}
-                className="px-6 py-2 bg-[#FF4500] text-white rounded-lg font-medium hover:bg-[#e03e00] transition-all"
+                className="px-6 py-2 bg-[#FF4500] text-white rounded-lg font-medium hover:bg-[#e03e00] transition-all w-full sm:w-auto"
               >
                 Renew Plan
               </button>
@@ -282,7 +282,7 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
             </p>
             <button
               onClick={handleOptBus}
-              className="px-6 py-2 bg-[#FF4500] text-white rounded-lg font-medium hover:bg-[#e03e00] transition-all"
+              className="px-6 py-2 bg-[#FF4500] text-white rounded-lg font-medium hover:bg-[#e03e00] transition-all w-full sm:w-auto"
             >
               Opt for Bus Service
             </button>
@@ -293,7 +293,7 @@ export default function ParentTrackingPage({ studentId = "STU12345" }) {
       {/* ---- OPT-IN MODAL ---- */}
       {optDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[450px] shadow-xl">
+          <div className="bg-white rounded-lg p-6 w-[450px] shadow-xl max-w-full">
             <h3 className="text-lg font-semibold mb-4 text-[#FF4500]">
               Opt for Bus Service
             </h3>

@@ -1,4 +1,3 @@
-// StudentGPA.js
 import React, { useState } from "react";
 import AssignmentCard from "./AssignmentCard";
 import GPAComponent from "./GPAComponent";
@@ -64,14 +63,18 @@ const StudentGPA = () => {
   ];
 
   return (
-    <div className="p-6 bg-white min-h-screen">
-      <h1 className="text-3xl font-semibold text-[#002133] mb-4">Current GPA & Semester Grades</h1>
+    <div className="p-4 sm:p-6 lg:p-8 bg-white min-h-screen">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-[#002133] mb-6">
+        Current GPA & Semester Grades
+      </h1>
 
       {/* GPA Section */}
       <GPAComponent gpa={gpa} semesterGrades={semesterGrades} />
 
       {/* Assignment List */}
-      <h2 className="text-2xl font-semibold text-[#002133] mt-6 mb-4">Assignments</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold text-[#002133] mt-6 mb-4">
+        Assignments
+      </h2>
       {assignments.length > 0 ? (
         assignments.map((assignment) => (
           <AssignmentCard

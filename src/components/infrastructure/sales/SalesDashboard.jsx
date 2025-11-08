@@ -1,4 +1,3 @@
-// SalesDashboard.jsx
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -68,11 +67,11 @@ export default function SalesDashboard() {
     typeof v === "number" ? v.toLocaleString("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }) : v;
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
       {/* Header / Filters */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-semibold text-[#002133]">{t("Sales Dashboard") || "Sales Dashboard"}</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-[#002133]">{t("Sales Dashboard") || "Sales Dashboard"}</h2>
           <p className="text-sm text-gray-500 mt-1">{t("welcome")}</p>
         </div>
 
@@ -111,30 +110,16 @@ export default function SalesDashboard() {
       </div>
 
       {/* KPI Top Strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-6">
-        <div className="bg-white rounded-lg p-4 shadow-sm flex flex-col">
-          <span className="text-xs text-gray-500">Target Amount</span>
-          <span className="text-xl font-semibold text-[#002133]">{kpis.targetAmount}</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 shadow-sm flex flex-col">
-          <span className="text-xs text-gray-500">Invoiced</span>
-          <span className="text-xl font-semibold text-[#002133]">{kpis.invoicedAmount}</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 shadow-sm flex flex-col">
-          <span className="text-xs text-gray-500">HOTS</span>
-          <span className="text-xl font-semibold text-[#002133]">{kpis.hots}</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 shadow-sm flex flex-col">
-          <span className="text-xs text-gray-500">Outstanding</span>
-          <span className="text-xl font-semibold text-[#002133]">{kpis.outstanding}</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 shadow-sm flex flex-col">
-          <span className="text-xs text-gray-500">Target Achieved</span>
-          <span className="text-xl font-semibold text-[#002133]">{kpis.pctTarget}</span>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        {Object.entries(kpis).map(([key, value], idx) => (
+          <div key={idx} className="bg-white rounded-lg p-4 shadow-sm flex flex-col">
+            <span className="text-xs text-gray-500">{key.replace(/([A-Z])/g, ' $1')}</span>
+            <span className="text-xl font-semibold text-[#002133]">{value}</span>
+          </div>
+        ))}
       </div>
 
-      {/* Recommended / Cards - horizontal */}
+      {/* Recommended / Cards */}
       <div className="mb-6">
         <div className="flex gap-4 overflow-x-auto pb-2">
           {recommendedCards.map((c, i) => (

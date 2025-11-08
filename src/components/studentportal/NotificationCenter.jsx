@@ -1,4 +1,3 @@
-// NotificationCenter.js
 import React, { useState } from 'react';
 import NotificationCard from './NotificationCard';
 
@@ -66,7 +65,7 @@ const NotificationCenter = () => {
           />
         ))
       ) : (
-        <p>No notifications available.</p>
+        <p className="text-gray-500 text-lg">No notifications available.</p>
       )}
     </div>
   );

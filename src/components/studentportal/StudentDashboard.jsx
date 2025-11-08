@@ -1,4 +1,3 @@
-// StudentDashboard.js
 import React, { useState } from "react";
 import ScheduleCard from "./ScheduleCard";
 
@@ -36,8 +35,10 @@ const StudentDashboard = () => {
   ];
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-semibold text-[#002133] mb-4">Today's Schedule</h1>
+    <div className="p-4 sm:p-6 lg:p-8 bg-white min-h-screen">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-[#002133] mb-6">
+        Today's Schedule
+      </h1>
       
       {/* Today's schedule list */}
       {todaySchedule.length > 0 ? (

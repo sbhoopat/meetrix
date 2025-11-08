@@ -10,7 +10,7 @@ export default function ChatWindow() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false); // State to track chat window open/close
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Helper to translate text
   const translateText = async (text, targetLang) => {
@@ -54,11 +54,11 @@ export default function ChatWindow() {
   };
 
   const handleToggleChat = () => {
-    setIsChatOpen((prev) => !prev); // Toggle chat visibility
+    setIsChatOpen((prev) => !prev);
   };
 
   const handleCloseChat = () => {
-    setIsChatOpen(false); // Close the chat window
+    setIsChatOpen(false);
   };
 
   // Handle "Enter" key to send the message
@@ -82,14 +82,14 @@ export default function ChatWindow() {
 
       {/* Chat Window */}
       {isChatOpen && (
-        <div className="fixed bottom-6 right-6 w-[350px] h-[450px] bg-white border border-gray-200 rounded-lg shadow-md">
+        <div className="fixed bottom-0 right-0 w-full sm:w-[350px] h-full sm:h-[450px] bg-white border border-gray-200 rounded-t-lg shadow-md overflow-hidden">
           <div className="flex flex-col h-full">
             {/* Header */}
-            <div className="bg-orange-red text-white p-3 rounded-t-lg font-semibold flex justify-between items-center">
+            <div className="bg-orange-red text-white p-3 font-semibold flex justify-between items-center">
               {t("Chat with AI")}
               <button
                 onClick={handleCloseChat}
-                className="text-white"
+                className="text-white p-2"
               >
                 <FaWindowClose size={18} />
               </button>
@@ -127,7 +127,9 @@ export default function ChatWindow() {
               <button
                 onClick={handleSend}
                 disabled={loading}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+                className={`${
+                  loading ? "bg-gray-400" : "bg-orange-500 hover:bg-orange-600"
+                } text-white px-4 py-2 rounded-lg text-sm font-semibold transition`}
               >
                 {t("Send")}
               </button>
